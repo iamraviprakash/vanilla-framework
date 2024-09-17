@@ -1,10 +1,9 @@
 import view from "./view.js"
-import childRoute from "./routes/index.js"
 
 const injectRoute = () => ({
-    path: '/',
+    path: ':id',
     component: view,
-    children: [childRoute]
+    children: []
 })
 
 export default injectRoute;

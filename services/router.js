@@ -3,6 +3,12 @@ const router = {
     routeStates: {},
     injectRoute: (route) => {
         router.routes.push(route)
+
+        if (route.children?.length > 0) {
+            for (let r of route.children) {
+                router.injectRoute(r())
+            }
+        }
     },
     init: (routes) => {
         router.injectRoute(routes())
