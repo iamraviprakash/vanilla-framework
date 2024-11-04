@@ -1,6 +1,10 @@
 const view = async (props) => {
     const routeId = props.route.id;
-    return '<h1>Hello state ' + routeId + '</h1>'
+    
+    const viewPageElement = document.createElement('h1');
+    viewPageElement.innerText = 'Hello state ' + routeId
+
+    return viewPageElement
 }
 
 export default view;

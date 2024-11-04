@@ -1,5 +1,6 @@
 const router = {
     routes: [],
+    currentRoute: '',
     routeStates: {},
     injectRoute: (route) => {
         router.routes.push(route)
@@ -31,26 +32,32 @@ const router = {
             history.pushState({ route }, '', route)
         }
 
+        router.currentRoute = route;
+
         let pageContent = null;
 
         for (let r of router.routes) {
             if (r.path.startsWith(':')) {
                 const routeKey = r.path.split(':')[1];
                 router.routeStates[routeKey] = route.split('/')[1];
-                pageContent = await r.component({ route: router.routeStates, store: app.store });
+                pageContent = await r.component({ route: router.routeStates, reload: router.reload });
                 break;
             }
 
             if (r.path === route) {
-                pageContent = await r.component({ route: router.routeStates, store: app.store });
+                pageContent = await r.component({ route: router.routeStates, reload: router.reload });
                 break;
             }
         }
 
         if (pageContent) {
             const main = document.getElementById('app');
-            main.innerHTML = pageContent;
+            main.innerHTML = "";
+            main.appendChild(pageContent);
         }
+    },
+    reload: async () => {
+        router.go(router.currentRoute, false)
     }
 }
 
